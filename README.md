@@ -23,9 +23,9 @@ Run the script:
 ```
 
 The script will ask you what you would like to set the following 3 values to:
-  -Max Children
-  -Max Requests
-  -Process Idle Timeout
+- Max Children
+- Max Requests
+- Process Idle Timeout
   
 The script will give you recommended values based on the system it is being run on, leaving a field blank will leave any cPanel accounts current setting intact. Once all 3 values have been set the script will change every single cPanel accounts FPM settings (and the default/global FPM settings) to the values you have entered.
 
