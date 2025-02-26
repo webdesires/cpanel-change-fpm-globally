@@ -1,5 +1,34 @@
 #!/bin/bash
 
+
+show_welcome_message() {
+    clear
+    echo "############################################################"
+    echo "#                                                          #"
+    echo "#          Change PHP-FPM settings globally                #"
+    echo "#          Made by Dean Williams                           #"
+    echo "#          Website: https://webdesires.co.uk               #"
+    echo "#          Version: 0.1                                    #"
+    echo "#                                                          #"
+    echo "#  Disclaimer: Please ensure you have backups of your      #"
+    echo "#  databases before running this script. We hold no        #"
+    echo "#  responsibility for any loss of data or damage.          #"
+    echo "#                                                          #"
+    echo "#  If you find this script useful, please consider         #"
+    echo "#  making a donation via PayPal to:                        #"
+    echo "#  payments@webdesires.co.uk                               #"
+    echo "#                                                          #"
+    echo "############################################################"
+    echo
+    read -p "Do you accept the disclaimer and wish to continue? (y/n): " accept
+    if [ "$accept" != "y" ]; then
+        echo "Exiting script."
+        exit 1
+    fi
+}
+
+show_welcome_message
+
 # Get system information
 os=$(uname -s)
 ram=$(free -m | awk '/^Mem:/{print $2}')
@@ -90,6 +119,15 @@ if [ "$idle_timeout" -ne 0 ]; then
 fi
 
 echo "Edited file: /var/cpanel/ApachePHPFPM/system_pool_defaults.yaml"
+
+#ask if they would like to turn on FPM for all cpanel accounts
+read -p "Would you like to enable PHP-FPM for all cPanel accounts? (y/n): " enable_fpm
+
+if [ "$enable_fpm" == "y" ]; then
+    echo "Enabling PHP-FPM for all cPanel accounts..."
+    /usr/local/cpanel/bin/rebuild_phpconf --default=fpm
+    echo "PHP-FPM enabled for all cPanel accounts."
+fi
 
 # Restart php-fpm
 echo "Restarting FPM..."
